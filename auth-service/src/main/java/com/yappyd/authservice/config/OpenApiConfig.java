@@ -12,10 +12,10 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Auth Service API")
+                        .title("API сервиса авторизации")
                         .version("0.0.1-SNAPSHOT")
                         .description("Документация API для сервиса авторизации")
                 )
-                .addServersItem(new Server().url("http://localhost:8081").description("Local server"));
+                .addServersItem(new Server().url("http://localhost:8081").description("localhost"));
     }
 }
