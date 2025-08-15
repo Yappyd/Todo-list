@@ -1,5 +1,6 @@
 package com.yappyd.authservice.service;
 
+import com.yappyd.authservice.model.Role;
 import com.yappyd.authservice.model.User;
 import com.yappyd.authservice.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,8 +27,8 @@ public class UserService {
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (user.getRole() == null || user.getRole().isEmpty()) {
-            user.setRole("ROLE_USER");
+        if (user.getRole() == null) {
+            user.setRole(Role.ROLE_USER);
         }
         return userRepository.save(user);
     }

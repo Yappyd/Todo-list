@@ -27,8 +27,9 @@ public class User {
     @ToString.Exclude
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private String role;
+    private Role role;
 
     @Override
     public boolean equals(Object o) {
