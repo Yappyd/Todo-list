@@ -1,4 +1,4 @@
-package com.yappyd.taskservice.controller;
+package com.yappyd.taskservice.web.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
