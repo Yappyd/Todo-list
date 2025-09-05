@@ -7,6 +7,7 @@ import com.yappyd.taskservice.web.error.ForbiddenException;
 import com.yappyd.taskservice.web.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,7 @@ public class TaskService {
         return taskRepository.findByOwnerUsername(ownerUsername, pageable).map(this::toResponse);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<TaskResponse> listAllForAdmin(Pageable pageable) {
         return taskRepository.findAll(pageable).map(this::toResponse);
     }
