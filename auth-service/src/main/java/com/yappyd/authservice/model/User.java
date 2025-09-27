@@ -2,9 +2,6 @@ package com.yappyd.authservice.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -14,14 +11,14 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-public class User {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 100)
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
 
     @Column(nullable = false, length = 255)

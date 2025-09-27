@@ -1,0 +1,36 @@
+package com.yappyd.authservice.controller;
+
+import com.yappyd.authservice.dto.RefreshRequest;
+import com.yappyd.authservice.dto.TokenResponse;
+import com.yappyd.authservice.dto.LoginRequest;
+import com.yappyd.authservice.service.AuthService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public TokenResponse register(@Valid @RequestBody LoginRequest req) {
+        return authService.register(req);
+    }
+
+    @PostMapping("/login")
+    public TokenResponse login (@Valid @RequestBody LoginRequest req) {
+        return authService.login(req);
+    }
+
+    @PostMapping("/refresh")
+    public TokenResponse refreshToken (@Valid @RequestBody RefreshRequest req) {
+        return  authService.refreshToken(req);
+    }
+}
