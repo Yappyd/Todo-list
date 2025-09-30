@@ -1,6 +1,7 @@
 package com.yappyd.authservice.service;
 
-import io.jsonwebtoken.Jwts;
+import com.yappyd.authservice.exception.InvalidTokenException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -49,15 +50,18 @@ public class JwtService {
                 .getSubject();
     }
 
-    public boolean isTokenValid(String token) {
+    public void isTokenValid(String token, TokenRole type) {
         try {
             Jwts.parser()
                     .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
                     .build()
                     .parseSignedClaims(token);
-            return true;
-        } catch (Exception e) {
-            return false;
+        }
+        catch (ExpiredJwtException e) {
+            throw new InvalidTokenException("Token expired", type, e);
+        }
+        catch (JwtException e) {
+            throw new InvalidTokenException("Invalid token", type, e);
         }
     }
 

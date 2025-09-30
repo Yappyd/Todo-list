@@ -23,5 +23,5 @@ public class User{
 
     @Column(nullable = false, length = 255)
     @ToString.Exclude
-    private String password;
+    private String passwordHash;
 }

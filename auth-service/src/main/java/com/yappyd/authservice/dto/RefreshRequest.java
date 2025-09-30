@@ -1,6 +1,9 @@
 package com.yappyd.authservice.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record RefreshRequest(
-        String token
+        @NotBlank
+        String refreshToken
 ) {
 }

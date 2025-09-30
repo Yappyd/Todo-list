@@ -21,7 +21,12 @@ datasource:
 
 security:
   jwt:
-    secret: "qwertyuiopasdfghjkl;'zxcvbnm,./1234567890"
+    secret: ${JWT_SECRET:default_dev_secret_must_be_overridden_to_strong_secret}
     access-expiration: 15m
     refresh-expiration: 7d
     issuer: auth-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

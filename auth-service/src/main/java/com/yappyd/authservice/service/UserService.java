@@ -1,5 +1,6 @@
 package com.yappyd.authservice.service;
 
+import com.yappyd.authservice.dto.LoginRequest;
 import com.yappyd.authservice.model.User;
 import com.yappyd.authservice.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,8 +26,11 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    public User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public void saveUser(LoginRequest req) {
+        User user = User.builder()
+                .username(req.username())
+                .passwordHash(passwordEncoder.encode(req.password()))
+                .build();
+        userRepository.save(user);
     }
 }
