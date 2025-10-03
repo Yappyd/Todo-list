@@ -7,9 +7,11 @@ import com.yappyd.authservice.exception.IncorrectPasswordException;
 import com.yappyd.authservice.exception.UsernameAlreadyExistsException;
 import com.yappyd.authservice.exception.UsernameNotFoundException;
 import com.yappyd.authservice.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthService {
     private final UserService userService;
@@ -25,12 +27,16 @@ public class AuthService {
     }
 
     public TokenResponse register(LoginRequest req) {
+
         if (userService.existsByUsername(req.username())) {
             throw new UsernameAlreadyExistsException(req.username());
         }
         userService.saveUser(req);
+
         String accessToken = jwtService.generateAccessToken(req.username());
         String refreshToken = jwtService.generateRefreshToken(req.username());
+        log.debug("Registration access and refresh tokens generated for username={}", req.username());
+
         return new TokenResponse(accessToken, refreshToken, TOKEN_TYPE, jwtService.getAccessExpirationSeconds());
     }
 
@@ -42,13 +48,18 @@ public class AuthService {
         }
         String accessToken = jwtService.generateAccessToken(req.username());
         String refreshToken = jwtService.generateRefreshToken(req.username());
+        log.debug("Login access and refresh tokens generated for username={}", req.username());
+
         return new TokenResponse(accessToken, refreshToken, TOKEN_TYPE, jwtService.getAccessExpirationSeconds());
     }
 
     public TokenResponse refreshToken(RefreshRequest req) {
-        jwtService.isTokenValid(req.refreshToken(), TokenRole.REFRESH);
+        jwtService.validateToken(req.refreshToken(), JwtService.TokenRole.REFRESH);
+
         String username = jwtService.extractUsername(req.refreshToken());
         String newAccessToken = jwtService.generateAccessToken(username);
+        log.debug("Refresh login access and refresh tokens generated for username={}", jwtService.extractUsername(req.refreshToken()));
+
         return new TokenResponse(newAccessToken, req.refreshToken(), TOKEN_TYPE, jwtService.getAccessExpirationSeconds());
     }
 }

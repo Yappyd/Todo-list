@@ -21,7 +21,8 @@ datasource:
 
 security:
   jwt:
-    secret: ${JWT_SECRET:default_dev_secret_must_be_overridden_to_strong_secret}
+    private-key: ${JWT_PRIVATE_KEY_PATH}
+    public-key: ${JWT_PUBLIC_KEY_PATH}
     access-expiration: 15m
     refresh-expiration: 7d
     issuer: auth-service
