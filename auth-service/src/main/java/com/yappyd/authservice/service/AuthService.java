@@ -58,7 +58,7 @@ public class AuthService {
 
         String username = jwtService.extractUsername(req.refreshToken());
         String newAccessToken = jwtService.generateAccessToken(username);
-        log.debug("Refresh login access and refresh tokens generated for username={}", jwtService.extractUsername(req.refreshToken()));
+        log.debug("Refresh login access and refresh tokens generated for username={}", username);
 
         return new TokenResponse(newAccessToken, req.refreshToken(), TOKEN_TYPE, jwtService.getAccessExpirationSeconds());
     }

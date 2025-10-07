@@ -117,12 +117,17 @@ public class JwtService {
     public String extractUsername(String token) {
         log.debug("Extracting username from token");
 
-        return Jwts.parser()
-                .verifyWith(publicKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+        try {
+            return Jwts.parser()
+                    .verifyWith(publicKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getSubject();
+        }
+        catch (JwtException e) {
+            throw new InvalidTokenException("Extract username exception", e);
+        }
     }
 
     public void validateToken(String token, TokenRole type) {

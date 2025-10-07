@@ -10,4 +10,7 @@ public class InvalidTokenException extends RuntimeException {
     public InvalidTokenException(String message, JwtService.TokenRole type) {
         super("Invalid " + type.name().toLowerCase() + " token: " + message);
     }
+    public InvalidTokenException(String message, Throwable cause) {
+        super("Invalid token: " + message, cause);
+    }
 }
