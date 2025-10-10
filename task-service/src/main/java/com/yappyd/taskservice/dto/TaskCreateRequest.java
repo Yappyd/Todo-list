@@ -10,13 +10,13 @@ import java.time.LocalDate;
 
 public record TaskCreateRequest(
         @NotBlank (message = "Title must not be blank")
-        @Size(max = 200)
+        @Size(max = 200, message = "Title must be at most 200 characters")
         String title,
-        @Size(max = 10000)
+        @Size(max = 10000, message = "Description must be at most 10000 characters")
         String description,
-        @NotNull (message = "Priority must not be null")
+        @NotNull
         TaskPriority priority,
-        @NotNull (message = "Status must not be null")
+        @NotNull
         TaskStatus status,
         @FutureOrPresent (message = "Deadline must be today or in the future")
         LocalDate deadline

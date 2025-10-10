@@ -1,6 +1,7 @@
-package com.yappyd.authservice.exception;
+package com.yappyd.taskservice.exception;
 
-import com.yappyd.authservice.dto.ErrorResponse;
+import com.yappyd.taskservice.dto.ErrorResponse;
+import com.yappyd.taskservice.dto.TaskResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,52 +13,31 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUsernameIsNotFound(UsernameNotFoundException ex) {
-        log.warn("Authentication failed: user not found. Message={}", ex.getMessage());
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTaskNotFoundException(TaskNotFoundException ex) {
+        log.warn("Task not found: {}", ex.getMessage());
 
         ErrorResponse error = new ErrorResponse(
-                "Authentication error",
-                "Incorrect user name or password",
-                HttpStatus.UNAUTHORIZED.value()
-        );
-        return  new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(IncorrectPasswordException.class)
-    public ResponseEntity<ErrorResponse> handleIncorrectPassword(IncorrectPasswordException ex) {
-        log.warn("Authentication failed: incorrect password. Message={}", ex.getMessage());
-
-        ErrorResponse error = new ErrorResponse(
-                "Authentication error",
-                "Incorrect user name or password",
-                HttpStatus.UNAUTHORIZED.value()
-        );
-        return  new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleIncorrectPassword(UsernameAlreadyExistsException ex) {
-        log.info("Registration failed: username already exists. Message={}", ex.getMessage());
-
-        ErrorResponse error = new ErrorResponse(
-                "Registration error",
+                "Task not found",
                 ex.getMessage(),
-                HttpStatus.CONFLICT.value()
+                HttpStatus.NOT_FOUND.value()
         );
-        return  new ResponseEntity<>(error, HttpStatus.CONFLICT);
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidToken(InvalidTokenException ex) {
-        log.warn("Token validation failed: {}", ex.getMessage(), ex);
+    @ExceptionHandler(UsernameAccessException.class)
+    public  ResponseEntity<ErrorResponse> handleUsernameAccessException(UsernameAccessException ex) {
+        log.warn("Access denied: {}", ex.getMessage());
 
         ErrorResponse error = new ErrorResponse(
-                "Invalid token",
+                "Access denied",
                 ex.getMessage(),
-                HttpStatus.UNAUTHORIZED.value()
+                HttpStatus.FORBIDDEN.value()
         );
-        return  new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
