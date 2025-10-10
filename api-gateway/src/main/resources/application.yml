@@ -10,6 +10,10 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
+        - id: auth-jwks
+          uri: lb://auth-service
+          predicates:
+            - Path=/.well-known/jwks.json
         - id: task-service
           uri: lb://task-service
           predicates:
